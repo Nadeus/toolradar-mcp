@@ -1,0 +1,39 @@
+{
+  "name": "toolradar-mcp",
+  "version": "1.0.0",
+  "description": "MCP server for Toolradar — search, compare, and get pricing for 8,600+ software tools. Works with Claude Desktop, Claude Code, Cursor, and any MCP-compatible AI assistant.",
+  "keywords": ["mcp", "toolradar", "software-discovery", "ai-agents", "claude", "tools"],
+  "license": "MIT",
+  "author": "Toolradar <hello@toolradar.com>",
+  "homepage": "https://toolradar.com/for-agents",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/toolradar/toolradar-mcp"
+  },
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "toolradar-mcp": "./bin/toolradar-mcp.js"
+  },
+  "files": [
+    "dist",
+    "bin",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.1",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0",
+    "@types/node": "^22.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

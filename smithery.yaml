@@ -1,0 +1,18 @@
+startCommand:
+  type: stdio
+  configSchema:
+    type: object
+    properties:
+      toolradarApiKey:
+        type: string
+        description: "Your Toolradar API key (get one free at toolradar.com/dashboard/api-keys)"
+    required:
+      - toolradarApiKey
+  commandFunction: |-
+    (config) => ({
+      command: "npx",
+      args: ["-y", "toolradar-mcp"],
+      env: {
+        TOOLRADAR_API_KEY: config.toolradarApiKey
+      }
+    })
