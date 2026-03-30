@@ -1,6 +1,6 @@
 {
   "name": "toolradar-mcp",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "MCP server for Toolradar — search, compare, and get pricing for 8,600+ software tools. Works with Claude Desktop, Claude Code, Cursor, and any MCP-compatible AI assistant.",
   "keywords": [
     "mcp",
@@ -13,9 +13,10 @@
   "license": "MIT",
   "author": "Toolradar <hello@toolradar.com>",
   "homepage": "https://toolradar.com/for-agents",
+  "mcpName": "io.github.nadeus/toolradar",
   "repository": {
     "type": "git",
-    "url": "https://github.com/toolradar/toolradar-mcp"
+    "url": "https://github.com/Nadeus/toolradar-mcp"
   },
   "type": "module",
   "main": "dist/index.js",
@@ -33,6 +34,7 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.28.0",
     "zod": "^3.25.0"
   },
   "devDependencies": {
