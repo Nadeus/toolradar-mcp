@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "toolradar": {
+      "command": "npx",
+      "args": ["-y", "toolradar-mcp"],
+      "env": {
+        "TOOLRADAR_API_KEY": "${TOOLRADAR_API_KEY}"
+      }
+    }
+  }
+}
