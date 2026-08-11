@@ -2,7 +2,7 @@
 
 ## LinkedIn Post
 
-We just made 8,400+ software tools callable by AI agents.
+We just made 8,600+ software tools callable by AI agents.
 
 Toolradar MCP is a free MCP server that gives Claude, Cursor, and any AI agent access to verified tool intelligence — pricing, reviews, alternatives, comparisons.
 
@@ -35,7 +35,7 @@ What if the next distribution channel isn't SEO or ads — but being the default
 
 🧵 We just shipped something that feels like the future of software discovery.
 
-Toolradar MCP: 8,400+ software tools, callable by your AI agents.
+Toolradar MCP: 8,600+ software tools, callable by your AI agents.
 
 Here's the problem and how we're solving it ↓
 
@@ -49,7 +49,7 @@ Ask Claude "how much does Figma cost?" and you might get a price from 2023.
 → G2/Capterra ratings
 → AI-identified alternatives
 → Structured pros, cons, features
-→ 8,400+ tools updated daily
+→ 8,600+ tools updated daily
 
 3/ Setup takes 2 minutes:
 
@@ -88,12 +88,12 @@ The future of software discovery isn't a website. It's being in the call stack.
 
 ## Hacker News (Show HN)
 
-Title: Show HN: Toolradar MCP – 8,400 software tools callable by AI agents
+Title: Show HN: Toolradar MCP – 8,600 software tools callable by AI agents
 
 Body:
 Hey HN,
 
-We built an MCP server that gives AI agents (Claude, Cursor, etc.) access to 8,400+ software tools with structured, verified data.
+We built an MCP server that gives AI agents (Claude, Cursor, etc.) access to 8,600+ software tools with structured, verified data.
 
 The problem: LLMs hallucinate pricing, miss new tools, and can't compare options accurately. Their training data is 1-2 years behind.
 
@@ -113,10 +113,10 @@ Would love feedback on the API design and tool selection.
 
 ## Reddit r/ClaudeAI
 
-Title: I built an MCP server that gives Claude access to 8,400+ software tools
+Title: I built an MCP server that gives Claude access to 8,600+ software tools
 
 Body:
-Just shipped this — Toolradar MCP lets Claude Desktop (and Claude Code, Cursor, etc.) search, compare, and get pricing for 8,400+ software tools.
+Just shipped this — Toolradar MCP lets Claude Desktop (and Claude Code, Cursor, etc.) search, compare, and get pricing for 8,600+ software tools.
 
 Why? Claude's training data is ~1 year behind. It confidently recommends tools that pivoted, quotes outdated prices, and misses new launches. This MCP server gives it access to live, structured data.
 
@@ -147,10 +147,10 @@ Free: 100 calls/day, all 6 tools. Docs at toolradar.com/docs.
 
 ## Reddit r/cursor
 
-Title: MCP server for software tool discovery — search 8,400+ tools from Cursor
+Title: MCP server for software tool discovery — search 8,600+ tools from Cursor
 
 Body:
-Built an MCP server that lets Cursor search, compare, and get pricing for 8,400+ software tools.
+Built an MCP server that lets Cursor search, compare, and get pricing for 8,600+ software tools.
 
 Useful when you're building something and need to pick the right tool/API/service — instead of Claude guessing from stale training data, it pulls live data from Toolradar.
 

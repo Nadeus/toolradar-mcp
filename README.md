@@ -1,6 +1,6 @@
 # Toolradar MCP Server
 
-> Give your AI agent access to 8,400+ software tools — search, compare, get pricing, find alternatives, and discover the best tool for any use case.
+> Give your AI agent access to 8,600+ software tools — search, compare, get pricing, find alternatives, and discover the best tool for any use case.
 
 **An MCP server that helps AI assistants recommend software tools with real, verified data instead of hallucinated answers.**
 

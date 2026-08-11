@@ -2,12 +2,18 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
 import { ToolradarClient } from "./client.js";
+import { createRequire } from "node:module";
 
-const client = new ToolradarClient();
+// Single source of truth for the version: package.json. It was hand-copied
+// into the handshake, the User-Agent, and the manifests, and the copies had
+// already diverged (1.0.0 / 1.0 / 1.0.1 depending on where you looked).
+const { version } = createRequire(import.meta.url)("../package.json") as { version: string };
+
+const client = new ToolradarClient(version);
 
 const server = new McpServer({
   name: "toolradar",
-  version: "1.0.0",
+  version,
 });
 
 // --- Tool 1: search_tools ---
@@ -18,7 +24,7 @@ server.tool(
     query: z.string().optional().describe("Search query (e.g. 'project management', 'AI writing tool')"),
     category: z.string().optional().describe("Filter by category slug (e.g. 'project-management', 'ai-writing')"),
     pricing: z.enum(["free", "freemium", "paid"]).optional().describe("Filter by pricing model"),
-    sort: z.enum(["score", "recent", "trending"]).optional().describe("Sort order: score (editorial rating), recent (newest), trending (most upvotes this week)"),
+    sort: z.enum(["score", "recent", "rating"]).optional().describe("Sort order: score (editorial rating), recent (newest first), rating (user review rating)"),
     limit: z.number().min(1).max(50).optional().describe("Number of results (default 10, max 50)"),
   },
   async (args) => {

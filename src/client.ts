@@ -8,10 +8,14 @@ const DEFAULT_API_URL = "https://toolradar.com/api/v1";
 export class ToolradarClient {
   private apiUrl: string;
   private apiKey: string;
+  private userAgent: string;
 
-  constructor() {
+  constructor(version = "0.0.0") {
     this.apiKey = process.env.TOOLRADAR_API_KEY || "";
     this.apiUrl = process.env.TOOLRADAR_API_URL || DEFAULT_API_URL;
+    // Real version in the UA so server-side ApiUsage can segment by client
+    // release; it was frozen at "1.0" while the package moved on.
+    this.userAgent = `toolradar-mcp/${version}`;
 
     if (!this.apiKey) {
       console.error(
@@ -33,7 +37,7 @@ export class ToolradarClient {
     const response = await fetch(url.toString(), {
       headers: {
         Authorization: `Bearer ${this.apiKey}`,
-        "User-Agent": "toolradar-mcp/1.0",
+        "User-Agent": this.userAgent,
       },
       signal: AbortSignal.timeout(15000),
     });

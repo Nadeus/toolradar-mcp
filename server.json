@@ -1,6 +1,6 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "io.github.nadeus/toolradar",
+  "name": "io.github.Nadeus/toolradar",
   "description": "Search, compare, and get pricing for 8,600+ software tools with verified data.",
   "repository": {
     "url": "https://github.com/Nadeus/toolradar-mcp",
@@ -14,7 +14,15 @@
       "version": "1.0.1",
       "transport": {
         "type": "stdio"
-      }
+      },
+      "environmentVariables": [
+        {
+          "name": "TOOLRADAR_API_KEY",
+          "description": "Toolradar API key. Create one free at https://toolradar.com/dashboard/api-keys",
+          "isRequired": true,
+          "isSecret": true
+        }
+      ]
     }
   ]
 }
