@@ -101,7 +101,7 @@ Search, compare, and get pricing for 8,600+ software tools via MCP.
 MCP server for Toolradar — search, compare, and get pricing for 8,600+ software tools. Verified pricing, G2/Capterra ratings, AI-identified alternatives. Free API with 100 calls/day.
 
 ### Long (paragraph)
-Toolradar MCP gives AI agents instant access to 8,600+ software tools with structured, up-to-date data. LLMs hallucinate pricing and miss new tools — Toolradar fixes this with pricing verified weekly, G2/Capterra ratings, high-quality logos, and AI-identified alternatives. Six tools: search, get details, compare side-by-side, find alternatives, get pricing breakdowns, and list categories. Works with Claude Desktop, Claude Code, Cursor, and any MCP client. Free API key with 100 calls/day.
+Toolradar MCP gives AI agents instant access to 8,600+ software tools with structured, up-to-date data. LLMs hallucinate pricing and miss new tools, Toolradar fixes this with pricing verified weekly, G2/Capterra ratings, high-quality logos, and AI-identified alternatives. Eight tools: recommend the best fit for a described need (with hard budget/pricing constraints), search, get details, compare side-by-side, find alternatives, get pricing breakdowns, list categories, and report a data-quality issue back to the verification queue. Four prompt shortcuts and three context resources included. Works with Claude Desktop, Claude Code, Cursor, and any MCP client. Free API key with 100 calls/day.
 
 ### Tags/Keywords
 mcp, software-discovery, ai-agents, tool-comparison, pricing, saas, claude, cursor, developer-tools
