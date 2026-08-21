@@ -16,6 +16,29 @@ const server = new McpServer({
   version,
 });
 
+// --- Tool 0: recommend_tools (the differentiator) ---
+server.tool(
+  "recommend_tools",
+  "Recommend the best software tools for a described need. Unlike search_tools (raw retrieval), this ranks candidates by fit, applies hard constraints (budget, pricing, category), and returns a justified, sourced shortlist with fit scores, caveats, verified starting prices, and next steps. Use this when a user asks 'what should I use for X'.",
+  {
+    need: z.string().describe("Natural-language need, e.g. 'simple CRM for a 6-person agency that syncs with Gmail'"),
+    team_size: z.number().optional().describe("Number of people who will use the tool"),
+    max_monthly_budget: z.number().optional().describe("Hard cap on the per-tool monthly price in USD"),
+    pricing: z.enum(["free", "freemium", "paid"]).optional().describe("Restrict to a pricing model"),
+    category: z.string().optional().describe("Restrict to a category slug (e.g. 'crm', 'project-management')"),
+    exclude: z.array(z.string()).optional().describe("Tool slugs to exclude from the shortlist"),
+    limit: z.number().min(1).max(10).optional().describe("Number of recommendations (default 5, max 10)"),
+  },
+  async (args) => {
+    try {
+      const result = await client.recommendTools(args);
+      return { content: [{ type: "text" as const, text: JSON.stringify(result, null, 2) }] };
+    } catch (e) {
+      return { content: [{ type: "text" as const, text: `Error: ${(e as Error).message}` }], isError: true };
+    }
+  }
+);
+
 // --- Tool 1: search_tools ---
 server.tool(
   "search_tools",
@@ -121,13 +144,33 @@ server.tool(
   }
 );
 
+// --- Tool 7: report_issue ---
+server.tool(
+  "report_issue",
+  "Report a data-quality issue you spotted while using Toolradar data (a wrong price, a dead/renamed tool, a missing or incorrect feature). Files a ticket to the verification queue. Use this when Toolradar data contradicts what you observe on the vendor's own site.",
+  {
+    slug: z.string().describe("Tool slug the issue is about (e.g. 'notion')"),
+    field: z.enum(["pricing", "status", "feature", "other"]).optional().describe("What is wrong (default 'other')"),
+    claim: z.string().describe("What is incorrect and what it should be, in one or two sentences"),
+    evidence_url: z.string().optional().describe("A URL backing the claim (ideally the vendor's own page)"),
+  },
+  async (args) => {
+    try {
+      const result = await client.reportIssue(args);
+      return { content: [{ type: "text" as const, text: JSON.stringify(result, null, 2) }] };
+    } catch (e) {
+      return { content: [{ type: "text" as const, text: `Error: ${(e as Error).message}` }], isError: true };
+    }
+  }
+);
+
 // --- Prompts: slash commands that chain the tools (v2.0.0) ---
 server.prompt(
   "choose-a-tool",
   "Recommend a tool for a described need",
   { need: z.string().describe("What you need, with any constraints (budget, team, integrations)") },
   ({ need }) => ({
-    messages: [{ role: "user", content: { type: "text", text: `Using the Toolradar tools, find the best software for this need and justify each pick with its verified pricing and score: ${need}. Search first, then get_pricing on the top candidates.` } }],
+    messages: [{ role: "user", content: { type: "text", text: `Call recommend_tools with this need and report the justified shortlist it returns, then get_pricing on the top pick to confirm the price: ${need}.` } }],
   })
 );
 server.prompt(

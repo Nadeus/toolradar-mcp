@@ -51,6 +51,29 @@ export class ToolradarClient {
     return response.json();
   }
 
+  async post(path: string, payload: Record<string, unknown>): Promise<unknown> {
+    const response = await fetch(`${this.apiUrl}${path}`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${this.apiKey}`,
+        "User-Agent": this.userAgent,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+      // recommend runs an LLM justification server-side, so allow more headroom
+      // than the 15s GET budget.
+      signal: AbortSignal.timeout(45000),
+    });
+
+    if (!response.ok) {
+      const body = await response.json().catch(() => ({}));
+      const error = (body as Record<string, string>).error || `HTTP ${response.status}`;
+      throw new Error(error);
+    }
+
+    return response.json();
+  }
+
   async searchTools(args: {
     query?: string;
     category?: string;
@@ -87,5 +110,26 @@ export class ToolradarClient {
 
   async listCategories() {
     return this.get("/categories");
+  }
+
+  async recommendTools(args: {
+    need: string;
+    team_size?: number;
+    max_monthly_budget?: number;
+    pricing?: string;
+    category?: string;
+    exclude?: string[];
+    limit?: number;
+  }) {
+    return this.post("/recommend", args as Record<string, unknown>);
+  }
+
+  async reportIssue(args: {
+    slug: string;
+    field?: string;
+    claim: string;
+    evidence_url?: string;
+  }) {
+    return this.post("/report-issue", args as Record<string, unknown>);
   }
 }

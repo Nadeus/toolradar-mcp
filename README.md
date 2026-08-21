@@ -70,12 +70,14 @@ Sign in and generate a free key (100 calls/day) at **[toolradar.com/dashboard/ap
 
 | Tool | What it does | Example prompt |
 |------|-------------|----------------|
+| `recommend_tools` | Justified, sourced shortlist for a described need, ranked by fit with hard budget/pricing/category constraints | "What should a 6-person agency use for a CRM under $40/mo?" |
 | `search_tools` | Search by keyword, category, pricing model | "Find free project management tools" |
 | `get_tool` | Full details: pricing, pros/cons, features, score | "Tell me about Linear" |
 | `compare_tools` | Side-by-side comparison of 2-4 tools | "Compare Notion, Clickup, and Asana" |
 | `get_alternatives` | Find real competitors to any tool | "What are the alternatives to Jira?" |
 | `get_pricing` | Detailed pricing with all tiers and features | "How much does Figma cost?" |
 | `list_categories` | Browse all software categories | "What categories are available?" |
+| `report_issue` | File a data-quality issue (wrong price, dead tool, missing feature) to the verification queue | "Toolradar shows Notion at $8, their site says $10 now" |
 
 ## What data do you get?
 
