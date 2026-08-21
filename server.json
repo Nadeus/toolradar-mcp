@@ -1,17 +1,17 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.Nadeus/toolradar",
-  "description": "Search, compare, and get pricing for 8,600+ software tools with verified data.",
+  "description": "Recommend, compare, and get verified pricing for 8,600+ software tools. Fresh prices, real alternatives, and G2/Capterra ratings for AI agents.",
   "repository": {
     "url": "https://github.com/Nadeus/toolradar-mcp",
     "source": "github"
   },
-  "version": "2.1.0",
+  "version": "2.1.1",
   "packages": [
     {
       "registryType": "npm",
       "identifier": "toolradar-mcp",
-      "version": "2.1.0",
+      "version": "2.1.1",
       "transport": {
         "type": "stdio"
       },
