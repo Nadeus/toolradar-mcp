@@ -1,4 +1,4 @@
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { McpServer, ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
 import { ToolradarClient } from "./client.js";
@@ -118,6 +118,66 @@ server.tool(
     } catch (e) {
       return { content: [{ type: "text" as const, text: `Error: ${(e as Error).message}` }], isError: true };
     }
+  }
+);
+
+// --- Prompts: slash commands that chain the tools (v2.0.0) ---
+server.prompt(
+  "choose-a-tool",
+  "Recommend a tool for a described need",
+  { need: z.string().describe("What you need, with any constraints (budget, team, integrations)") },
+  ({ need }) => ({
+    messages: [{ role: "user", content: { type: "text", text: `Using the Toolradar tools, find the best software for this need and justify each pick with its verified pricing and score: ${need}. Search first, then get_pricing on the top candidates.` } }],
+  })
+);
+server.prompt(
+  "compare-my-shortlist",
+  "Compare 2 to 4 tools you are deciding between",
+  { tools: z.string().describe("Comma-separated tool names or slugs") },
+  ({ tools }) => ({
+    messages: [{ role: "user", content: { type: "text", text: `Compare these tools with compare_tools and tell me which to pick and why: ${tools}.` } }],
+  })
+);
+server.prompt(
+  "audit-stack-cost",
+  "Estimate what a stack of tools costs",
+  { tools: z.string().describe("The tools you use, comma-separated") },
+  ({ tools }) => ({
+    messages: [{ role: "user", content: { type: "text", text: `For each of these tools, call get_pricing and sum the monthly cost, noting the verification date of each price: ${tools}.` } }],
+  })
+);
+server.prompt(
+  "cheaper-alternative",
+  "Find a cheaper alternative to a tool",
+  { tool: z.string().describe("The tool to replace") },
+  ({ tool }) => ({
+    messages: [{ role: "user", content: { type: "text", text: `Find cheaper alternatives to ${tool} using get_alternatives, then compare their pricing with get_pricing.` } }],
+  })
+);
+
+// --- Resources: attach a tool/category/comparison to context (v2.0.0) ---
+server.resource(
+  "tool-profile",
+  new ResourceTemplate("toolradar://tool/{slug}", { list: undefined }),
+  async (uri, { slug }) => {
+    const result = await client.getTool(String(slug));
+    return { contents: [{ uri: uri.href, mimeType: "application/json", text: JSON.stringify(result, null, 2) }] };
+  }
+);
+server.resource(
+  "category-tools",
+  new ResourceTemplate("toolradar://category/{slug}", { list: undefined }),
+  async (uri, { slug }) => {
+    const result = await client.searchTools({ category: String(slug), limit: 25 });
+    return { contents: [{ uri: uri.href, mimeType: "application/json", text: JSON.stringify(result, null, 2) }] };
+  }
+);
+server.resource(
+  "comparison",
+  new ResourceTemplate("toolradar://compare/{slugs}", { list: undefined }),
+  async (uri, { slugs }) => {
+    const result = await client.compareTools(String(slugs).split("+"));
+    return { contents: [{ uri: uri.href, mimeType: "application/json", text: JSON.stringify(result, null, 2) }] };
   }
 );
 
