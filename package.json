@@ -31,7 +31,7 @@
   "scripts": {
     "build": "tsc --noEmit && esbuild src/index.ts --bundle --platform=node --format=esm --outfile=dist/index.js --banner:js=\"import { createRequire as __cr } from 'node:module'; const require = __cr(import.meta.url);\"",
     "prepublishOnly": "npm run build",
-    "build:mcpb": "npm run build && rm -rf mcpb-build && mkdir -p mcpb-build/server && cp dist/index.js mcpb-build/server/index.mjs && cp mcpb/manifest.json mcpb/icon.png mcpb-build/ && node -e \"const p=require('./package.json');require('fs').writeFileSync('mcpb-build/package.json',JSON.stringify({name:p.name,version:p.version,type:'module'}))\" && npx --yes @anthropic-ai/mcpb pack mcpb-build toolradar.mcpb",
+    "build:mcpb": "npm run build && rm -rf mcpb-build && mkdir -p mcpb-build/server && cp dist/index.js mcpb-build/server/index.mjs && cp mcpb/manifest.json mcpb/icon.png mcpb-build/ && node -e \"const fs=require('fs');const p=require('./package.json');fs.writeFileSync('mcpb-build/package.json',JSON.stringify({name:p.name,version:p.version,type:'module'}));const m=JSON.parse(fs.readFileSync('mcpb-build/manifest.json','utf8'));m.version=p.version;fs.writeFileSync('mcpb-build/manifest.json',JSON.stringify(m,null,2))\" && npx --yes @anthropic-ai/mcpb pack mcpb-build toolradar.mcpb",
     "dev": "tsc --watch",
     "start": "node dist/index.js"
   },
