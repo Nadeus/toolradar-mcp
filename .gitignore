@@ -4,3 +4,5 @@ dist/
 
 # mcp-publisher auth tokens (never commit)
 .mcpregistry_*_token
+mcpb-build/
+*.mcpb

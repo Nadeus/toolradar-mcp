@@ -1,0 +1,58 @@
+{
+  "manifest_version": "0.2",
+  "name": "toolradar",
+  "display_name": "Toolradar",
+  "version": "2.1.1",
+  "description": "Recommend, compare, and get verified pricing for 8,600+ software tools.",
+  "long_description": "Toolradar gives Claude live access to a curated database of 8,600+ software tools: semantic search, budget-aware recommendations, side-by-side comparisons, real alternatives, verified pricing tiers, and aggregated G2/Capterra ratings. Data is refreshed continuously from vendors' own pricing pages.\n\nRequires a free API key: create one at https://toolradar.com/dashboard/api-keys",
+  "author": {
+    "name": "Toolradar",
+    "email": "hello@toolradar.com",
+    "url": "https://toolradar.com"
+  },
+  "homepage": "https://toolradar.com/for-agents",
+  "documentation": "https://toolradar.com/docs",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Nadeus/toolradar-mcp"
+  },
+  "license": "MIT",
+  "icon": "icon.png",
+  "keywords": ["software discovery", "saas", "pricing", "comparisons", "alternatives", "ai agents"],
+  "server": {
+    "type": "node",
+    "entry_point": "server/index.mjs",
+    "mcp_config": {
+      "command": "node",
+      "args": ["${__dirname}/server/index.mjs"],
+      "env": {
+        "TOOLRADAR_API_KEY": "${user_config.api_key}"
+      }
+    }
+  },
+  "user_config": {
+    "api_key": {
+      "type": "string",
+      "title": "Toolradar API key",
+      "description": "Free API key. Create one at https://toolradar.com/dashboard/api-keys",
+      "sensitive": true,
+      "required": true
+    }
+  },
+  "tools": [
+    { "name": "recommend_tools", "description": "Budget- and team-aware tool recommendations for a stated need" },
+    { "name": "search_tools", "description": "Search 8,600+ tools by keyword, category, and pricing model" },
+    { "name": "get_tool", "description": "Full profile of one tool: scores, ratings, features, FAQs" },
+    { "name": "compare_tools", "description": "Side-by-side comparison of 2-4 tools" },
+    { "name": "get_alternatives", "description": "Direct competitors and alternatives to a tool" },
+    { "name": "get_pricing", "description": "Verified pricing tiers, refreshed from the vendor's pricing page" },
+    { "name": "list_categories", "description": "Browse the category taxonomy" },
+    { "name": "report_issue", "description": "Report incorrect data on a tool listing" }
+  ],
+  "compatibility": {
+    "platforms": ["darwin", "win32", "linux"],
+    "runtimes": {
+      "node": ">=18.14.1"
+    }
+  }
+}
