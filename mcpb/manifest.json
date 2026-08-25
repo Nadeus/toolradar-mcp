@@ -8,7 +8,7 @@
   "author": {
     "name": "Toolradar",
     "email": "hello@toolradar.com",
-    "url": "https://toolradar.com"
+    "url": "https://github.com/Nadeus"
   },
   "homepage": "https://toolradar.com/for-agents",
   "documentation": "https://toolradar.com/docs",
@@ -18,13 +18,22 @@
   },
   "license": "MIT",
   "icon": "icon.png",
-  "keywords": ["software discovery", "saas", "pricing", "comparisons", "alternatives", "ai agents"],
+  "keywords": [
+    "software discovery",
+    "saas",
+    "pricing",
+    "comparisons",
+    "alternatives",
+    "ai agents"
+  ],
   "server": {
     "type": "node",
     "entry_point": "server/index.mjs",
     "mcp_config": {
       "command": "node",
-      "args": ["${__dirname}/server/index.mjs"],
+      "args": [
+        "${__dirname}/server/index.mjs"
+      ],
       "env": {
         "TOOLRADAR_API_KEY": "${user_config.api_key}"
       }
@@ -40,17 +49,45 @@
     }
   },
   "tools": [
-    { "name": "recommend_tools", "description": "Budget- and team-aware tool recommendations for a stated need" },
-    { "name": "search_tools", "description": "Search 8,600+ tools by keyword, category, and pricing model" },
-    { "name": "get_tool", "description": "Full profile of one tool: scores, ratings, features, FAQs" },
-    { "name": "compare_tools", "description": "Side-by-side comparison of 2-4 tools" },
-    { "name": "get_alternatives", "description": "Direct competitors and alternatives to a tool" },
-    { "name": "get_pricing", "description": "Verified pricing tiers, refreshed from the vendor's pricing page" },
-    { "name": "list_categories", "description": "Browse the category taxonomy" },
-    { "name": "report_issue", "description": "Report incorrect data on a tool listing" }
+    {
+      "name": "recommend_tools",
+      "description": "Budget- and team-aware tool recommendations for a stated need"
+    },
+    {
+      "name": "search_tools",
+      "description": "Search 8,600+ tools by keyword, category, and pricing model"
+    },
+    {
+      "name": "get_tool",
+      "description": "Full profile of one tool: scores, ratings, features, FAQs"
+    },
+    {
+      "name": "compare_tools",
+      "description": "Side-by-side comparison of 2-4 tools"
+    },
+    {
+      "name": "get_alternatives",
+      "description": "Direct competitors and alternatives to a tool"
+    },
+    {
+      "name": "get_pricing",
+      "description": "Verified pricing tiers, refreshed from the vendor's pricing page"
+    },
+    {
+      "name": "list_categories",
+      "description": "Browse the category taxonomy"
+    },
+    {
+      "name": "report_issue",
+      "description": "Report incorrect data on a tool listing"
+    }
   ],
   "compatibility": {
-    "platforms": ["darwin", "win32", "linux"],
+    "platforms": [
+      "darwin",
+      "win32",
+      "linux"
+    ],
     "runtimes": {
       "node": ">=18.14.1"
     }
