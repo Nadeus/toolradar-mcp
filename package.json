@@ -1,7 +1,7 @@
 {
   "name": "toolradar-mcp",
   "version": "2.2.0",
-  "description": "MCP server for Toolradar: recommend, search, compare, and get verified pricing for 8,600+ software tools. Works with Claude Desktop, Claude Code, Cursor, and any MCP-compatible AI assistant.",
+  "description": "MCP server for Toolradar: recommend, search, compare and price software tools, with verified prices and real alternatives. No API key needed. Works with Claude, ChatGPT, Cursor, VS Code and any MCP client.",
   "keywords": [
     "mcp",
     "toolradar",
