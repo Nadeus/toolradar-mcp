@@ -1,0 +1,12 @@
+{
+  "name": "toolradar",
+  "description": "Toolradar: search, compare and price software tools from your AI assistant",
+  "owner": { "name": "Toolradar", "email": "hello@toolradar.com" },
+  "plugins": [
+    {
+      "name": "toolradar",
+      "source": "./plugin",
+      "description": "Recommend, compare and price software tools. Every price comes with the date it was read on the vendor's pricing page. No API key needed."
+    }
+  ]
+}

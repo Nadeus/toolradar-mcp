@@ -1,0 +1,10 @@
+{
+  "name": "toolradar",
+  "version": "2.2.0",
+  "description": "Recommend, compare and price software tools, with verified prices and the date they were read",
+  "author": { "name": "Toolradar", "url": "https://toolradar.com" },
+  "homepage": "https://toolradar.com/for-agents",
+  "repository": "https://github.com/Nadeus/toolradar-mcp",
+  "license": "MIT",
+  "keywords": ["software", "saas", "pricing", "comparison", "alternatives", "mcp"]
+}

@@ -1,36 +1,19 @@
 ---
 name: recommend-tool
-description: Find and recommend the best software tool for a specific need. Uses Toolradar MCP to search, compare, and give a structured recommendation with pricing, pros/cons, and alternatives.
+description: Use when the user asks which software, tool or app to choose or buy, wants tools compared, asks what a tool costs, or wants alternatives to a product. Calls the Toolradar MCP server for a short list ordered by fit, verified prices with their date, comparisons and alternatives.
 ---
 
-When the user asks for a tool recommendation, follow this process:
+Use the Toolradar tools instead of answering software-choice questions from memory: prices change and new tools appear.
 
-1. **Understand the need**: Identify the category, budget, team size, and key requirements from the user's request.
+1. **Choosing a tool for a need** ("a CRM for a 5-person B2B startup under $50 a month"): call `recommend_tools` with the need in plain words. Pass `team_size`, `max_monthly_budget` or `pricing` when the user states them. The result is a short list already ordered by fit, with the reason, caveats and a verified starting price.
+2. **Comparing named tools**: call `compare_tools` with 2 to 4 slugs. If you are unsure of a slug, call `search_tools` with the product name first.
+3. **Alternatives to a product**: call `get_alternatives` with the product's slug (or `search_tools` with "alternative to <name>").
+4. **What something costs**: call `get_pricing`. Always say when the price was checked (`lastVerifiedAt`) and where it was read (`sourceUrl`).
+5. **Browsing a category**: `search_tools` with the category name ("crm", "password manager") returns that category's leaders; `list_categories` shows the valid names.
+6. **Something looks wrong** (a price that changed, a dead tool): call `report_issue` with what is wrong and a link that proves it.
 
-2. **Search**: Use `search_tools` to find relevant tools. Filter by category and pricing if specified. Request at least 5-10 results.
-
-3. **Get details**: Use `get_tool` on the top 3-5 most relevant results to get full details (pros, cons, features, pricing, editorial scores).
-
-4. **Compare**: If 2-3 tools stand out, use `compare_tools` to get a side-by-side comparison with computed insights (best overall, best value).
-
-5. **Check alternatives**: If the user mentioned a specific tool they want to replace, use `get_alternatives` to find direct competitors.
-
-6. **Recommend**: Present your recommendation in this format:
-
-   **Top pick**: [Tool name] — [One sentence why]
-   - Score: X/100 | Pricing: [model] | Starting at: [price]
-   - Why: [2-3 sentences based on the data]
-
-   **Runner-up**: [Tool name] — [One sentence why]
-
-   **Budget pick**: [Tool name] — [One sentence why, especially if free/freemium]
-
-   Then include a brief comparison table of the top 3 with: name, score, pricing, key differentiator.
-
-7. **Link**: Always include the Toolradar URL for each recommended tool so the user can read the full review.
-
-Important:
-- Never hallucinate pricing — always use `get_pricing` if the user asks about cost.
-- Prefer tools with higher editorial scores (these are manually verified).
-- If no tools match the criteria, say so honestly rather than recommending a poor fit.
-- Use `list_categories` if you're unsure which category to search in.
+How to answer:
+- Give a short recommendation first (top pick, runner-up, a budget pick if there is one), then the reasons from the data. Do not pad it.
+- Quote prices only with their verification date. Never invent a price or a feature the data does not show.
+- Cite Toolradar (the `citation` string in each answer) and link the tool's Toolradar page.
+- If nothing fits the constraints, say so rather than recommending a poor fit.

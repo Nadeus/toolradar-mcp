@@ -22,6 +22,13 @@ Works with **Claude** (Desktop, Code, claude.ai) · **ChatGPT** · **Cursor** ·
 claude mcp add --transport http toolradar https://toolradar.com/api/mcp
 ```
 
+**Claude Code plugin** (the same server plus a skill that tells Claude when to use it):
+
+```bash
+claude plugin marketplace add Nadeus/toolradar-mcp
+claude plugin install toolradar@toolradar
+```
+
 **Claude.ai, ChatGPT and other clients with custom connectors**: add a remote MCP server with the URL `https://toolradar.com/api/mcp` (no authentication).
 
 **Claude Desktop, or any client that starts local servers** (`claude_desktop_config.json`):
@@ -91,7 +98,9 @@ A nightly job asks the hosted endpoint 60 realistic software-choice questions (a
 - [toolradar.com/docs](https://toolradar.com/docs): API documentation
 - [npmjs.com/package/toolradar-mcp](https://www.npmjs.com/package/toolradar-mcp): npm package
 
-## Optional: `/recommend-tool` skill for Claude Code
+## The plugin package
+
+`plugin/` is one package for two directories: Claude Code (`.claude-plugin/plugin.json`, `.mcp.json`) and the OpenAI plugin format (`plugin.json`, `mcp.json`). Both carry the same skill (`plugin/skills/toolradar/SKILL.md`). The skill alone, for Claude Code:
 
 ```bash
 claude skill add --url https://raw.githubusercontent.com/Nadeus/toolradar-mcp/main/skill-recommend-tool.md

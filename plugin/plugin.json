@@ -1,0 +1,30 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "toolradar",
+  "version": "2.2.0",
+  "description": "Recommend, compare and price software tools, with verified prices and the date they were read",
+  "author": { "name": "Toolradar", "url": "https://toolradar.com" },
+  "homepage": "https://toolradar.com/for-agents",
+  "repository": "https://github.com/Nadeus/toolradar-mcp",
+  "license": "MIT",
+  "keywords": ["software", "saas", "pricing", "comparison", "alternatives", "mcp"],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Toolradar",
+        "shortDescription": "Find, compare and price software",
+        "longDescription": "Toolradar helps you choose software with real data: a short list ordered by fit for your team size and budget, side-by-side comparisons, direct alternatives, and pricing tiers with the date each price was read on the vendor's own pricing page.",
+        "developerName": "Dupple",
+        "category": "Business & Operations",
+        "capabilities": ["Read"],
+        "websiteURL": "https://toolradar.com",
+        "privacyPolicyURL": "https://toolradar.com/privacy",
+        "termsOfServiceURL": "https://toolradar.com/terms",
+        "defaultPrompt": ["Recommend a CRM for a 5-person B2B startup under $50 a month.", "Compare Notion, ClickUp and Asana.", "How much does Figma cost, and when was that price checked?"],
+        "brandColor": "#6366F1",
+        "composerIcon": "./assets/icon.png",
+        "logo": "./assets/logo.png"
+      }
+    }
+  }
+}
