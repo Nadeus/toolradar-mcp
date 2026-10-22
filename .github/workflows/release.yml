@@ -1,0 +1,41 @@
+name: Release
+
+# Push a tag (git tag v2.2.1 && git push --tags) after bumping package.json, server.json and mcpb/manifest.json.
+# npm uses trusted publishing (OIDC): no token is stored anywhere. Set it up once on npmjs.com:
+#   Package toolradar-mcp > Settings > Trusted Publisher > GitHub Actions > Nadeus/toolradar-mcp, workflow release.yml.
+# The official MCP registry login is also OIDC (namespace io.github.Nadeus/*).
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: "https://registry.npmjs.org"
+      - name: Tag matches package.json
+        run: test "v$(node -p "require('./package.json').version")" = "$GITHUB_REF_NAME"
+      - run: npm install -g npm@latest
+      - run: npm ci
+      - run: npm run build
+      - name: Publish to npm
+        run: npm publish --provenance --access public
+      - name: Publish to the official MCP registry
+        run: |
+          curl -sL "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_linux_amd64.tar.gz" | tar xz mcp-publisher
+          ./mcp-publisher login github-oidc
+          ./mcp-publisher publish
+      - name: Build the Claude Desktop bundle and attach it to the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          npm run build:mcpb
+          gh release create "$GITHUB_REF_NAME" toolradar.mcpb --generate-notes
