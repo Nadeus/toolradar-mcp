@@ -5,14 +5,10 @@ startCommand:
     properties:
       toolradarApiKey:
         type: string
-        description: "Your Toolradar API key (get one free at toolradar.com/dashboard/api-keys)"
-    required:
-      - toolradarApiKey
+        description: "Optional. Works without a key (40 calls a day). A free key, no signup (POST https://toolradar.com/api/v1/keys), raises it to 300 a day."
   commandFunction: |-
     (config) => ({
       command: "npx",
       args: ["-y", "toolradar-mcp"],
-      env: {
-        TOOLRADAR_API_KEY: config.toolradarApiKey
-      }
+      env: config.toolradarApiKey ? { TOOLRADAR_API_KEY: config.toolradarApiKey } : {}
     })

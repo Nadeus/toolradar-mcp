@@ -11,6 +11,23 @@ const { version } = createRequire(import.meta.url)("../package.json") as { versi
 
 const client = new ToolradarClient(version);
 
+/** Forward a tool call to the Toolradar endpoint; errors come back as tool errors, never crash the server. */
+async function run(name: string, args: Record<string, unknown>) {
+  try {
+    const result = await client.callTool(name, args);
+    return { content: [{ type: "text" as const, text: result.text }], ...(result.isError ? { isError: true } : {}) };
+  } catch (e) {
+    return { content: [{ type: "text" as const, text: `Error: ${(e as Error).message}` }], isError: true };
+  }
+}
+
+/** Resource body (the JSON of a tool call). */
+async function resourceText(name: string, args: Record<string, unknown>): Promise<string> {
+  const result = await client.callTool(name, args);
+  if (result.isError) throw new Error(result.text);
+  return result.text;
+}
+
 const server = new McpServer({
   name: "toolradar",
   version,
@@ -31,8 +48,7 @@ server.tool(
   },
   async (args) => {
     try {
-      const result = await client.recommendTools(args);
-      return { content: [{ type: "text" as const, text: JSON.stringify(result, null, 2) }] };
+      return run("recommend_tools", args);
     } catch (e) {
       return { content: [{ type: "text" as const, text: `Error: ${(e as Error).message}` }], isError: true };
     }
@@ -52,8 +68,7 @@ server.tool(
   },
   async (args) => {
     try {
-      const result = await client.searchTools(args);
-      return { content: [{ type: "text" as const, text: JSON.stringify(result, null, 2) }] };
+      return run("search_tools", args);
     } catch (e) {
       return { content: [{ type: "text" as const, text: `Error: ${(e as Error).message}` }], isError: true };
     }
@@ -69,8 +84,7 @@ server.tool(
   },
   async ({ slug }) => {
     try {
-      const result = await client.getTool(slug);
-      return { content: [{ type: "text" as const, text: JSON.stringify(result, null, 2) }] };
+      return run("get_tool", { slug });
     } catch (e) {
       return { content: [{ type: "text" as const, text: `Error: ${(e as Error).message}` }], isError: true };
     }
@@ -86,8 +100,7 @@ server.tool(
   },
   async ({ slugs }) => {
     try {
-      const result = await client.compareTools(slugs);
-      return { content: [{ type: "text" as const, text: JSON.stringify(result, null, 2) }] };
+      return run("compare_tools", { slugs });
     } catch (e) {
       return { content: [{ type: "text" as const, text: `Error: ${(e as Error).message}` }], isError: true };
     }
@@ -104,8 +117,7 @@ server.tool(
   },
   async ({ slug, limit }) => {
     try {
-      const result = await client.getAlternatives(slug, limit);
-      return { content: [{ type: "text" as const, text: JSON.stringify(result, null, 2) }] };
+      return run("get_alternatives", { slug, limit });
     } catch (e) {
       return { content: [{ type: "text" as const, text: `Error: ${(e as Error).message}` }], isError: true };
     }
@@ -121,8 +133,7 @@ server.tool(
   },
   async ({ slug }) => {
     try {
-      const result = await client.getPricing(slug);
-      return { content: [{ type: "text" as const, text: JSON.stringify(result, null, 2) }] };
+      return run("get_pricing", { slug });
     } catch (e) {
       return { content: [{ type: "text" as const, text: `Error: ${(e as Error).message}` }], isError: true };
     }
@@ -136,8 +147,7 @@ server.tool(
   {},
   async () => {
     try {
-      const result = await client.listCategories();
-      return { content: [{ type: "text" as const, text: JSON.stringify(result, null, 2) }] };
+      return run("list_categories", {});
     } catch (e) {
       return { content: [{ type: "text" as const, text: `Error: ${(e as Error).message}` }], isError: true };
     }
@@ -156,8 +166,7 @@ server.tool(
   },
   async (args) => {
     try {
-      const result = await client.reportIssue(args);
-      return { content: [{ type: "text" as const, text: JSON.stringify(result, null, 2) }] };
+      return run("report_issue", args);
     } catch (e) {
       return { content: [{ type: "text" as const, text: `Error: ${(e as Error).message}` }], isError: true };
     }
@@ -203,24 +212,21 @@ server.resource(
   "tool-profile",
   new ResourceTemplate("toolradar://tool/{slug}", { list: undefined }),
   async (uri, { slug }) => {
-    const result = await client.getTool(String(slug));
-    return { contents: [{ uri: uri.href, mimeType: "application/json", text: JSON.stringify(result, null, 2) }] };
+    return { contents: [{ uri: uri.href, mimeType: "application/json", text: await resourceText("get_tool", { slug: String(slug) }) }] };
   }
 );
 server.resource(
   "category-tools",
   new ResourceTemplate("toolradar://category/{slug}", { list: undefined }),
   async (uri, { slug }) => {
-    const result = await client.searchTools({ category: String(slug), limit: 25 });
-    return { contents: [{ uri: uri.href, mimeType: "application/json", text: JSON.stringify(result, null, 2) }] };
+    return { contents: [{ uri: uri.href, mimeType: "application/json", text: await resourceText("search_tools", { category: String(slug), limit: 25 }) }] };
   }
 );
 server.resource(
   "comparison",
   new ResourceTemplate("toolradar://compare/{slugs}", { list: undefined }),
   async (uri, { slugs }) => {
-    const result = await client.compareTools(String(slugs).split("+"));
-    return { contents: [{ uri: uri.href, mimeType: "application/json", text: JSON.stringify(result, null, 2) }] };
+    return { contents: [{ uri: uri.href, mimeType: "application/json", text: await resourceText("compare_tools", { slugs: String(slugs).split("+") }) }] };
   }
 );
 

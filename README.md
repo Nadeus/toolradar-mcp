@@ -1,154 +1,98 @@
 # Toolradar MCP Server
 
-> Give your AI agent access to 8,600+ software tools — search, compare, get pricing, find alternatives, and discover the best tool for any use case.
+> Search, compare and price 10,000+ software tools from your AI assistant. Every price comes with the date it was read on the vendor's own pricing page.
 
-**An MCP server that helps AI assistants recommend software tools with real, verified data instead of hallucinated answers.**
+Works with **Claude** (Desktop, Code, claude.ai) · **ChatGPT** · **Cursor** · **VS Code** · **Windsurf** · **Cline** · any MCP client. **No API key and no signup needed.**
 
-LLMs confidently quote outdated pricing, miss new tools, and generate comparison tables with no real data. This MCP server connects your agent to Toolradar's live database: pricing verified weekly, G2/Capterra ratings, editorial scores, and new tools added daily.
-
-Works with **Claude Desktop** · **Claude Code** · **Cursor** · **Windsurf** · **Cline** · any MCP client
+[![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](cursor://anysphere.cursor-deeplink/mcp/install?name=toolradar&config=eyJ1cmwiOiJodHRwczovL3Rvb2xyYWRhci5jb20vYXBpL21jcCJ9) [Add to VS Code](vscode:mcp/install?%7B%22name%22%3A%22toolradar%22%2C%22url%22%3A%22https%3A//toolradar.com/api/mcp%22%7D)
 
 ## What can your AI do with this?
 
-Ask your AI assistant things like:
-
-- "Find the best free project management tools"
-- "Compare Notion, Clickup, and Asana"
+- "Recommend a CRM for a 5-person B2B startup under $50 a month"
+- "Compare Notion, ClickUp and Asana"
 - "What are the alternatives to Jira?"
-- "How much does Figma cost?"
-- "Recommend a CRM for a 5-person startup under $50/month"
-- "Show me AI writing tools with a free tier"
+- "How much does Figma cost, and when was that price checked?"
+- "Find free password managers"
 
-Your agent calls Toolradar's tools behind the scenes and returns structured, accurate answers.
+## Quick setup
 
-## Quick Setup
+**Claude Code** (hosted endpoint, nothing to install):
 
-### Claude Desktop
+```bash
+claude mcp add --transport http toolradar https://toolradar.com/api/mcp
+```
 
-Add to your `claude_desktop_config.json`:
+**Claude.ai, ChatGPT and other clients with custom connectors**: add a remote MCP server with the URL `https://toolradar.com/api/mcp` (no authentication).
+
+**Claude Desktop, or any client that starts local servers** (`claude_desktop_config.json`):
 
 ```json
 {
   "mcpServers": {
     "toolradar": {
       "command": "npx",
-      "args": ["-y", "toolradar-mcp"],
-      "env": {
-        "TOOLRADAR_API_KEY": "your_key_here"
-      }
+      "args": ["-y", "toolradar-mcp"]
     }
   }
 }
 ```
 
-### Claude Code
+**Cursor**: use the button above, or Settings > MCP > add `https://toolradar.com/api/mcp`. **VS Code**: use the link above, or `code --add-mcp '{"name":"toolradar","url":"https://toolradar.com/api/mcp"}'`.
 
-```bash
-claude mcp add toolradar -- npx -y toolradar-mcp
-```
-
-### Cursor
-
-In Cursor Settings > MCP, add a new server:
-```
-Name: toolradar
-Command: npx -y toolradar-mcp
-Environment: TOOLRADAR_API_KEY=your_key_here
-```
-
-### Windsurf / Cline / Other MCP Clients
-
-```bash
-TOOLRADAR_API_KEY=your_key npx -y toolradar-mcp
-```
-
-## Get an API Key
-
-Sign in and generate a free key (100 calls/day) at **[toolradar.com/dashboard/api-keys](https://toolradar.com/dashboard/api-keys)**.
-
-## 6 MCP Tools
+## 8 tools
 
 | Tool | What it does | Example prompt |
 |------|-------------|----------------|
-| `recommend_tools` | Justified, sourced shortlist for a described need, ranked by fit with hard budget/pricing/category constraints | "What should a 6-person agency use for a CRM under $40/mo?" |
-| `search_tools` | Search by keyword, category, pricing model | "Find free project management tools" |
-| `get_tool` | Full details: pricing, pros/cons, features, score | "Tell me about Linear" |
-| `compare_tools` | Side-by-side comparison of 2-4 tools | "Compare Notion, Clickup, and Asana" |
-| `get_alternatives` | Find real competitors to any tool | "What are the alternatives to Jira?" |
-| `get_pricing` | Detailed pricing with all tiers and features | "How much does Figma cost?" |
-| `list_categories` | Browse all software categories | "What categories are available?" |
-| `report_issue` | File a data-quality issue (wrong price, dead tool, missing feature) to the verification queue | "Toolradar shows Notion at $8, their site says $10 now" |
+| `recommend_tools` | Reads a described need (category, team size, budget), returns a short list ordered by fit, with the reason, caveats and the verified starting price | "What should a 6-person agency use for a CRM under $40/mo?" |
+| `search_tools` | Keyword search; a category name ("crm", "password manager") or "alternative to X" returns that category's leaders or X's alternatives | "Find free project management tools" |
+| `get_tool` | Full profile: pricing, pros and cons, features, score, review synthesis | "Tell me about Linear" |
+| `compare_tools` | Side-by-side comparison of 2-4 tools | "Compare Notion, ClickUp and Asana" |
+| `get_alternatives` | Direct competitors of a tool | "What are the alternatives to Jira?" |
+| `get_pricing` | Tiers and prices with provenance: source page, verification date, confidence | "How much does Figma cost?" |
+| `list_categories` | The categories and how many tools each holds | "What categories are available?" |
+| `report_issue` | Report a wrong price, a dead tool or a missing feature to the verification queue | "Notion shows $8 but their site says $10" |
+
+Every data answer includes a ready-to-use `citation` (Toolradar, verification date, link): quote it when you use the data.
 
 ## What data do you get?
 
-Every tool in the database includes:
+- **Verified pricing**: tiers read from the vendor's pricing page, with the date of the last check
+- **Editorial score** (0-100) and **review ratings** aggregated from review platforms
+- **Pros, cons and features**
+- **Alternatives** identified per tool, not just "same category"
+- **Positions among tools of the same category**, dated
 
-- **Editorial scores** (0-100) — manually rated by the Toolradar team
-- **Verified pricing** — tiers, plans, and prices checked every week
-- **G2 & Capterra ratings** — aggregated from major review platforms
-- **Pros & cons** — based on real user data
-- **TL;DR** — 3-bullet summary of what the tool does
-- **Features list** — structured, not freeform text
-- **AI-identified alternatives** — real competitors, not just "same category"
-- **Funding data** — latest fundraising rounds and acquisitions via Signalbase
+## Limits
 
-## Why not just ask the LLM?
+| Access | Calls per day |
+|---|---|
+| Anonymous (nothing to configure) | 40 |
+| Free key, no signup: `curl -X POST https://toolradar.com/api/v1/keys` | 300 |
+| Key created in your [dashboard](https://toolradar.com/dashboard/api-keys) | 1,000 |
 
-| Problem | Without Toolradar | With Toolradar |
-|---------|-------------------|----------------|
-| Pricing | Hallucinated from 2023 training data | Verified this week |
-| New tools | Misses anything launched in the last year | Updated daily (Product Hunt, HN, Techpresso) |
-| Comparisons | Generic tables with no real data | Structured with scores, pricing, pros/cons |
-| Alternatives | "Same category" guesses | AI-identified direct competitors |
-| Ratings | None or fabricated | Real G2/Capterra/Trustpilot aggregation |
+Set the key in `TOOLRADAR_API_KEY`, or send it as `Authorization: Bearer <key>` to the hosted endpoint. Limits reset at 00:00 UTC.
 
-## Bonus: `/recommend-tool` Skill for Claude Code
-
-A ready-made skill that turns Toolradar into a structured recommendation engine:
-
-```bash
-# Install the skill
-claude skill add --url https://raw.githubusercontent.com/Nadeus/toolradar-mcp/main/skill-recommend-tool.md
-
-# Use it
-/recommend-tool "best free CRM for a 5-person startup"
-```
-
-It searches, compares the top 3, and gives a formatted recommendation with top pick + runner-up + budget pick.
-
-## REST API
-
-The MCP server is a thin client over our REST API. Call it directly from any language:
-
-```bash
-curl -H "Authorization: Bearer tr_live_your_key" \
-  "https://toolradar.com/api/v1/search?q=project+management&limit=5"
-```
-
-Full docs: **[toolradar.com/docs](https://toolradar.com/docs)**
-
-## Environment Variables
+## Environment variables
 
 | Variable | Required | Default | Description |
 |----------|----------|---------|-------------|
-| `TOOLRADAR_API_KEY` | Yes | — | Your API key ([get one free](https://toolradar.com/dashboard/api-keys)) |
-| `TOOLRADAR_API_URL` | No | `https://toolradar.com/api/v1` | Custom API endpoint |
+| `TOOLRADAR_API_KEY` | No | none | Raises the daily limit (see above) |
+| `TOOLRADAR_MCP_URL` | No | `https://toolradar.com/api/mcp` | Custom endpoint |
 
-## Rate Limits
+The npm package is a thin stdio proxy of the hosted endpoint, so both always return the same answers.
 
-Free tier: **100 API calls/day**. Resets at midnight UTC. Need more? [Contact us](https://toolradar.com/contact).
+## Quality check
+
+A nightly job asks the hosted endpoint 60 realistic software-choice questions (a full run of 205 every Sunday) and records how often a market leader of the category comes back in the top 3. The server is [open for you to test](https://toolradar.com/for-agents).
 
 ## Links
 
-- [toolradar.com/for-agents](https://toolradar.com/for-agents) — Landing page
-- [toolradar.com/docs](https://toolradar.com/docs) — API documentation
-- [toolradar.com/dashboard/api-keys](https://toolradar.com/dashboard/api-keys) — Get your API key
-- [npmjs.com/package/toolradar-mcp](https://www.npmjs.com/package/toolradar-mcp) — npm package
+- [toolradar.com/for-agents](https://toolradar.com/for-agents): landing page and examples
+- [toolradar.com/docs](https://toolradar.com/docs): API documentation
+- [npmjs.com/package/toolradar-mcp](https://www.npmjs.com/package/toolradar-mcp): npm package
 
-## Keywords
+## Optional: `/recommend-tool` skill for Claude Code
 
-MCP server, software tools, SaaS comparison, tool recommendation, AI agent, Claude MCP, Cursor MCP, software discovery, find best tool, compare tools, pricing lookup, G2 ratings, Capterra ratings, software alternatives, developer tools, product comparison, tool finder, software recommendation engine
-
-## License
-
-MIT
+```bash
+claude skill add --url https://raw.githubusercontent.com/Nadeus/toolradar-mcp/main/skill-recommend-tool.md
+```

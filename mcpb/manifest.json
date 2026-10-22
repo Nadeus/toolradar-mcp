@@ -2,9 +2,9 @@
   "manifest_version": "0.2",
   "name": "toolradar",
   "display_name": "Toolradar",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "description": "Recommend, compare, and get verified pricing for 8,600+ software tools.",
-  "long_description": "Toolradar gives Claude live access to a curated database of 8,600+ software tools: semantic search, budget-aware recommendations, side-by-side comparisons, real alternatives, verified pricing tiers, and aggregated G2/Capterra ratings. Data is refreshed continuously from vendors' own pricing pages.\n\nRequires a free API key: create one at https://toolradar.com/dashboard/api-keys",
+  "long_description": "Toolradar gives Claude live access to a curated database of 8,600+ software tools: semantic search, budget-aware recommendations, side-by-side comparisons, real alternatives, verified pricing tiers, and aggregated G2/Capterra ratings. Data is refreshed continuously from vendors' own pricing pages.\n\nNo API key needed: the first 40 calls a day are free and anonymous. A free key (no signup, see the README) raises the limit to 300 a day.",
   "author": {
     "name": "Toolradar",
     "email": "hello@toolradar.com",
@@ -43,9 +43,9 @@
     "api_key": {
       "type": "string",
       "title": "Toolradar API key",
-      "description": "Free API key. Create one at https://toolradar.com/dashboard/api-keys",
+      "description": "Optional. Works without a key (40 calls a day); a free key raises it to 300 a day. Create one with no signup: POST https://toolradar.com/api/v1/keys",
       "sensitive": true,
-      "required": true
+      "required": false
     }
   },
   "tools": [

@@ -1,135 +1,52 @@
 /**
- * HTTP client for the Toolradar API v1.
- * All tool handlers delegate to this client.
+ * Thin client for the Toolradar remote MCP endpoint (https://toolradar.com/api/mcp).
+ * Every tool of this stdio server forwards to the same endpoint the hosted connector uses, so both
+ * always return the same answers and every server-side improvement reaches npm users without a release.
+ * No API key is needed: anonymous calls get 40/day. A free key (POST https://toolradar.com/api/v1/keys,
+ * no signup) raises it to 300/day: set TOOLRADAR_API_KEY.
  */
 
-const DEFAULT_API_URL = "https://toolradar.com/api/v1";
+const DEFAULT_MCP_URL = "https://toolradar.com/api/mcp";
+
+export interface ToolResult {
+  text: string;
+  isError: boolean;
+}
 
 export class ToolradarClient {
-  private apiUrl: string;
+  private url: string;
   private apiKey: string;
   private userAgent: string;
+  private nextId = 1;
 
   constructor(version = "0.0.0") {
     this.apiKey = process.env.TOOLRADAR_API_KEY || "";
-    this.apiUrl = process.env.TOOLRADAR_API_URL || DEFAULT_API_URL;
-    // Real version in the UA so server-side ApiUsage can segment by client
-    // release; it was frozen at "1.0" while the package moved on.
+    this.url = process.env.TOOLRADAR_MCP_URL || DEFAULT_MCP_URL;
+    // Real version in the UA so server-side usage can segment by client release.
     this.userAgent = `toolradar-mcp/${version}`;
-
-    if (!this.apiKey) {
-      console.error(
-        "TOOLRADAR_API_KEY is not set. Get your free key at https://toolradar.com/for-agents"
-      );
-    }
   }
 
-  async get(path: string, params?: Record<string, string>): Promise<unknown> {
-    const url = new URL(`${this.apiUrl}${path}`);
-    if (params) {
-      for (const [key, value] of Object.entries(params)) {
-        if (value !== undefined && value !== "") {
-          url.searchParams.set(key, value);
-        }
-      }
-    }
-
-    const response = await fetch(url.toString(), {
-      headers: {
-        Authorization: `Bearer ${this.apiKey}`,
-        "User-Agent": this.userAgent,
-      },
-      signal: AbortSignal.timeout(15000),
-    });
-
-    if (!response.ok) {
-      const body = await response.json().catch(() => ({}));
-      const error = (body as Record<string, string>).error || `HTTP ${response.status}`;
-      throw new Error(error);
-    }
-
-    return response.json();
-  }
-
-  async post(path: string, payload: Record<string, unknown>): Promise<unknown> {
-    const response = await fetch(`${this.apiUrl}${path}`, {
+  async callTool(name: string, args: Record<string, unknown>): Promise<ToolResult> {
+    const response = await fetch(this.url, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${this.apiKey}`,
-        "User-Agent": this.userAgent,
         "Content-Type": "application/json",
+        Accept: "application/json, text/event-stream",
+        "User-Agent": this.userAgent,
+        ...(this.apiKey ? { Authorization: `Bearer ${this.apiKey}` } : {}),
       },
-      body: JSON.stringify(payload),
-      // recommend runs an LLM justification server-side, so allow more headroom
-      // than the 15s GET budget.
+      body: JSON.stringify({ jsonrpc: "2.0", id: this.nextId++, method: "tools/call", params: { name, arguments: args } }),
+      // recommend_tools reads the need and judges the candidates with an LLM server-side: allow headroom.
       signal: AbortSignal.timeout(45000),
     });
 
-    if (!response.ok) {
-      const body = await response.json().catch(() => ({}));
-      const error = (body as Record<string, string>).error || `HTTP ${response.status}`;
-      throw new Error(error);
-    }
-
-    return response.json();
-  }
-
-  async searchTools(args: {
-    query?: string;
-    category?: string;
-    pricing?: string;
-    sort?: string;
-    limit?: number;
-  }) {
-    const params: Record<string, string> = {};
-    if (args.query) params.q = args.query;
-    if (args.category) params.category = args.category;
-    if (args.pricing) params.pricing = args.pricing;
-    if (args.sort) params.sort = args.sort;
-    if (args.limit) params.limit = String(args.limit);
-    return this.get("/search", params);
-  }
-
-  async getTool(slug: string) {
-    return this.get(`/tools/${encodeURIComponent(slug)}`);
-  }
-
-  async compareTools(slugs: string[]) {
-    return this.get("/compare", { slugs: slugs.join(",") });
-  }
-
-  async getAlternatives(slug: string, limit?: number) {
-    const params: Record<string, string> = {};
-    if (limit) params.limit = String(limit);
-    return this.get(`/alternatives/${encodeURIComponent(slug)}`, params);
-  }
-
-  async getPricing(slug: string) {
-    return this.get(`/pricing/${encodeURIComponent(slug)}`);
-  }
-
-  async listCategories() {
-    return this.get("/categories");
-  }
-
-  async recommendTools(args: {
-    need: string;
-    team_size?: number;
-    max_monthly_budget?: number;
-    pricing?: string;
-    category?: string;
-    exclude?: string[];
-    limit?: number;
-  }) {
-    return this.post("/recommend", args as Record<string, unknown>);
-  }
-
-  async reportIssue(args: {
-    slug: string;
-    field?: string;
-    claim: string;
-    evidence_url?: string;
-  }) {
-    return this.post("/report-issue", args as Record<string, unknown>);
+    const body = (await response.json().catch(() => null)) as {
+      result?: { content?: Array<{ text?: string }>; isError?: boolean };
+      error?: { message?: string };
+    } | null;
+    if (!body) throw new Error(`HTTP ${response.status}`);
+    if (body.error) throw new Error(body.error.message || `HTTP ${response.status}`);
+    const result = body.result ?? {};
+    return { text: result.content?.[0]?.text ?? JSON.stringify(result), isError: !!result.isError };
   }
 }

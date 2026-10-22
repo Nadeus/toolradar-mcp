@@ -6,20 +6,20 @@
     "url": "https://github.com/Nadeus/toolradar-mcp",
     "source": "github"
   },
-  "version": "2.1.1",
+  "version": "2.2.0",
   "packages": [
     {
       "registryType": "npm",
       "identifier": "toolradar-mcp",
-      "version": "2.1.1",
+      "version": "2.2.0",
       "transport": {
         "type": "stdio"
       },
       "environmentVariables": [
         {
           "name": "TOOLRADAR_API_KEY",
-          "description": "Toolradar API key. Create one free at https://toolradar.com/dashboard/api-keys",
-          "isRequired": true,
+          "description": "Optional. Without a key you get 40 calls a day, with a free key 300 a day. Get one with no signup: POST https://toolradar.com/api/v1/keys",
+          "isRequired": false,
           "isSecret": true
         }
       ]
