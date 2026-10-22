@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "toolradar",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "description": "Recommend, compare and price software tools, with verified prices and the date they were read",
   "author": {
     "name": "Toolradar",
@@ -90,7 +90,11 @@
               "prompt": "Who wrote the novel Les Miserables and when was it published?"
             }
           ]
-        }
+        },
+        "demo_recording_url": "https://toolradar.com/demo/toolradar-chatgpt-plugin-demo-2026-10.mp4"
+      },
+      "publication": {
+        "release_notes": "First release of the Toolradar plugin.\n\n- Get a short list of software ordered by fit for your team size and budget, with a one-sentence reason for each pick.\n- Compare 2 to 4 tools side by side.\n- See direct alternatives to a product.\n- Read pricing tiers, with the date each price was checked on the vendor's own pricing page.\n- Search the catalog by keyword or browse by category.\n\nNo account or API key needed."
       }
     }
   }
