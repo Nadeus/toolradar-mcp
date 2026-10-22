@@ -1,0 +1,39 @@
+name: Finish release
+
+# Run by hand (Actions > Finish release > tag v2.2.0) when the tag's Release workflow
+# published to npm but failed afterwards: it only does the official MCP registry
+# publish and the Claude Desktop bundle, never npm.
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag already on npm, e.g. v2.2.0"
+        required: true
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  finish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - name: Publish to the official MCP registry
+        run: |
+          curl -sL "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_linux_amd64.tar.gz" | tar xz mcp-publisher
+          ./mcp-publisher login github-oidc
+          ./mcp-publisher publish
+      - name: Build the Claude Desktop bundle and attach it to the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.tag }}
+        run: |
+          npm run build:mcpb
+          gh release create "$TAG" toolradar.mcpb --generate-notes || gh release upload "$TAG" toolradar.mcpb --clobber
