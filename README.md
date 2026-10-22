@@ -1,5 +1,7 @@
 # Toolradar MCP Server
 
+[![toolradar-mcp MCP server – quality and maintenance score on Glama](https://glama.ai/mcp/servers/Nadeus/toolradar-mcp/badges/score.svg)](https://glama.ai/mcp/servers/Nadeus/toolradar-mcp)
+
 > Search, compare and price 10,000+ software tools from your AI assistant. Every price comes with the date it was read on the vendor's own pricing page.
 
 Works with **Claude** (Desktop, Code, claude.ai) · **ChatGPT** · **Cursor** · **VS Code** · **Windsurf** · **Cline** · any MCP client. **No API key and no signup needed.**
