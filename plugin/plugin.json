@@ -48,41 +48,31 @@
             {
               "description": "Short list of tools for a stated team size and budget",
               "prompt": "Recommend a CRM for a 5-person B2B startup under $50 a month.",
-              "tools_triggered": [
-                "recommend_tools"
-              ],
+              "tools_triggered": "recommend_tools",
               "expected_behavior": "Calls recommend_tools and answers with a short list of CRM tools ordered by fit for a 5-person team, each with a one-sentence reason and its pricing."
             },
             {
               "description": "Side-by-side comparison of named tools",
               "prompt": "Compare Notion and ClickUp for a small marketing team.",
-              "tools_triggered": [
-                "compare_tools"
-              ],
+              "tools_triggered": "compare_tools",
               "expected_behavior": "Calls compare_tools with the two tools and summarises how they differ on pricing, scores and features."
             },
             {
               "description": "Pricing of one tool",
               "prompt": "How much does Figma cost?",
-              "tools_triggered": [
-                "get_pricing"
-              ],
+              "tools_triggered": "get_pricing",
               "expected_behavior": "Calls get_pricing for Figma and lists its pricing tiers, saying where the figures come from."
             },
             {
               "description": "Alternatives to a product",
               "prompt": "What are good alternatives to Slack?",
-              "tools_triggered": [
-                "get_alternatives"
-              ],
+              "tools_triggered": "get_alternatives",
               "expected_behavior": "Calls get_alternatives for Slack and lists direct alternatives such as Microsoft Teams with a line on each."
             },
             {
               "description": "Keyword search of the catalog",
               "prompt": "Find project management tools for software teams.",
-              "tools_triggered": [
-                "search_tools"
-              ],
+              "tools_triggered": "search_tools",
               "expected_behavior": "Calls search_tools and lists matching project management tools with their tagline and pricing model."
             }
           ],
