@@ -1,29 +1,106 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "toolradar",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "Recommend, compare and price software tools, with verified prices and the date they were read",
-  "author": { "name": "Toolradar", "url": "https://toolradar.com" },
+  "author": {
+    "name": "Toolradar",
+    "url": "https://toolradar.com"
+  },
   "homepage": "https://toolradar.com/for-agents",
   "repository": "https://github.com/Nadeus/toolradar-mcp",
   "license": "MIT",
-  "keywords": ["software", "saas", "pricing", "comparison", "alternatives", "mcp"],
+  "keywords": [
+    "software",
+    "saas",
+    "pricing",
+    "comparison",
+    "alternatives",
+    "mcp"
+  ],
   "extensions": {
     "com.openai": {
       "interface": {
         "displayName": "Toolradar",
-        "shortDescription": "Find, compare and price software",
+        "shortDescription": "Find, compare, price software",
         "longDescription": "Toolradar helps you choose software with real data: a short list ordered by fit for your team size and budget, side-by-side comparisons, direct alternatives, and pricing tiers with the date each price was read on the vendor's own pricing page.",
         "developerName": "Dupple",
         "category": "Business & Operations",
-        "capabilities": ["Read"],
+        "capabilities": [
+          "Read"
+        ],
         "websiteURL": "https://toolradar.com",
         "privacyPolicyURL": "https://toolradar.com/privacy",
         "termsOfServiceURL": "https://toolradar.com/terms",
-        "defaultPrompt": ["Recommend a CRM for a 5-person B2B startup under $50 a month.", "Compare Notion, ClickUp and Asana.", "How much does Figma cost, and when was that price checked?"],
+        "defaultPrompt": [
+          "Recommend a CRM for a 5-person B2B startup under $50 a month.",
+          "Compare Notion, ClickUp and Asana.",
+          "How much does Figma cost, and when was that price checked?"
+        ],
         "brandColor": "#6366F1",
         "composerIcon": "./assets/icon.png",
-        "logo": "./assets/logo.png"
+        "logo": "./assets/logo.png",
+        "supportURL": "https://toolradar.com/contact"
+      },
+      "review": {
+        "test_cases": {
+          "positive": [
+            {
+              "description": "Short list of tools for a stated team size and budget",
+              "prompt": "Recommend a CRM for a 5-person B2B startup under $50 a month.",
+              "tools_triggered": [
+                "recommend_tools"
+              ],
+              "expected_behavior": "Calls recommend_tools and answers with a short list of CRM tools ordered by fit for a 5-person team, each with a one-sentence reason and its pricing."
+            },
+            {
+              "description": "Side-by-side comparison of named tools",
+              "prompt": "Compare Notion and ClickUp for a small marketing team.",
+              "tools_triggered": [
+                "compare_tools"
+              ],
+              "expected_behavior": "Calls compare_tools with the two tools and summarises how they differ on pricing, scores and features."
+            },
+            {
+              "description": "Pricing of one tool",
+              "prompt": "How much does Figma cost?",
+              "tools_triggered": [
+                "get_pricing"
+              ],
+              "expected_behavior": "Calls get_pricing for Figma and lists its pricing tiers, saying where the figures come from."
+            },
+            {
+              "description": "Alternatives to a product",
+              "prompt": "What are good alternatives to Slack?",
+              "tools_triggered": [
+                "get_alternatives"
+              ],
+              "expected_behavior": "Calls get_alternatives for Slack and lists direct alternatives such as Microsoft Teams with a line on each."
+            },
+            {
+              "description": "Keyword search of the catalog",
+              "prompt": "Find project management tools for software teams.",
+              "tools_triggered": [
+                "search_tools"
+              ],
+              "expected_behavior": "Calls search_tools and lists matching project management tools with their tagline and pricing model."
+            }
+          ],
+          "negative": [
+            {
+              "description": "Programming request, no software to choose",
+              "prompt": "Write a Python function that sorts a list of dictionaries by a key."
+            },
+            {
+              "description": "Weather question",
+              "prompt": "What will the weather be like in Paris tomorrow?"
+            },
+            {
+              "description": "General knowledge question",
+              "prompt": "Who wrote the novel Les Miserables and when was it published?"
+            }
+          ]
+        }
       }
     }
   }
