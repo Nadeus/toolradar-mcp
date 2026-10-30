@@ -1,6 +1,6 @@
 # Toolradar MCP Server
 
-[![toolradar-mcp MCP server – quality and maintenance score on Glama](https://glama.ai/mcp/servers/Nadeus/toolradar-mcp/badges/score.svg)](https://glama.ai/mcp/servers/Nadeus/toolradar-mcp)
+[![toolradar-mcp MCP server – quality and maintenance score on Glama](https://glama.ai/mcp/servers/Nadeus/toolradar-mcp/badges/score.svg)](https://glama.ai/mcp/servers/Nadeus/toolradar-mcp) [![Listed on HookMCP](https://hookmcp.com/badge.svg)](https://hookmcp.com)
 
 > Search, compare and price 10,000+ software tools from your AI assistant. Every price comes with the date it was read on the vendor's own pricing page.
 
