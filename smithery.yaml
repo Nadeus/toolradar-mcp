@@ -5,7 +5,7 @@ startCommand:
     properties:
       toolradarApiKey:
         type: string
-        description: "Optional. Works without a key (40 calls a day). A free key, no signup (POST https://toolradar.com/api/v1/keys), raises it to 300 a day."
+        description: "Optional. Works without a key (500 calls a day). A free key, no signup (POST https://toolradar.com/api/v1/keys), raises it to 10,000 a day."
   commandFunction: |-
     (config) => ({
       command: "npx",

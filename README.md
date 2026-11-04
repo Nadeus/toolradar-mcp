@@ -48,7 +48,7 @@ claude plugin install toolradar@toolradar
 
 **Cursor**: use the button above, or Settings > MCP > add `https://toolradar.com/api/mcp`. **VS Code**: use the link above, or `code --add-mcp '{"name":"toolradar","url":"https://toolradar.com/api/mcp"}'`.
 
-## 8 tools
+## 11 tools
 
 | Tool | What it does | Example prompt |
 |------|-------------|----------------|
@@ -60,8 +60,15 @@ claude plugin install toolradar@toolradar
 | `get_pricing` | Tiers and prices with provenance: source page, verification date, confidence | "How much does Figma cost?" |
 | `list_categories` | The categories and how many tools each holds | "What categories are available?" |
 | `report_issue` | Report a wrong price, a dead tool or a missing feature to the verification queue | "Notion shows $8 but their site says $10" |
+| `verify_price` | Reads the vendor's pricing page now and checks the stored prices against it (needs a free key) | "Is Notion's price still right today?" |
+| `changes_since` | Pricing changes confirmed on vendor pages since a date | "Which CRM prices changed since October 1?" |
+| `agent_trends` | What AI assistants open on Toolradar: most read and most compared tools, top categories | "Which tools do AI assistants look up most?" |
 
-Every data answer includes a ready-to-use `citation` (Toolradar, verification date, link): quote it when you use the data.
+Every data answer includes a ready-to-use `citation` (Toolradar, verification date, link): quote it when you use the data. A product we do not list comes back with a `not_listed` note, never a lookalike.
+
+### For software vendors: keep your own listing right
+
+Add `https://toolradar.com/mcp` instead (Claude: Customize, Connectors, Add custom connector; ChatGPT: Add custom MCP server, OAuth). It has the same 11 tools plus 4 owner tools that ask you to sign in to Toolradar the first time: `update_my_listing`, `get_my_listing`, `add_my_product` (files a new product for review, free) and `undo_listing_edit`. Every change is previewed first and logged.
 
 ## What data do you get?
 
@@ -75,9 +82,9 @@ Every data answer includes a ready-to-use `citation` (Toolradar, verification da
 
 | Access | Calls per day |
 |---|---|
-| Anonymous (nothing to configure) | 40 |
-| Free key, no signup: `curl -X POST https://toolradar.com/api/v1/keys` | 300 |
-| Key created in your [dashboard](https://toolradar.com/dashboard/api-keys) | 1,000 |
+| Anonymous (nothing to configure) | 500 per IP |
+| Free key, no signup: `curl -X POST https://toolradar.com/api/v1/keys` | 10,000 |
+| Key created in your [dashboard](https://toolradar.com/dashboard/api-keys) | 10,000 per account |
 
 Set the key in `TOOLRADAR_API_KEY`, or send it as `Authorization: Bearer <key>` to the hosted endpoint. Limits reset at 00:00 UTC.
 

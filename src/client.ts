@@ -2,8 +2,8 @@
  * Thin client for the Toolradar remote MCP endpoint (https://toolradar.com/api/mcp).
  * Every tool of this stdio server forwards to the same endpoint the hosted connector uses, so both
  * always return the same answers and every server-side improvement reaches npm users without a release.
- * No API key is needed: anonymous calls get 40/day. A free key (POST https://toolradar.com/api/v1/keys,
- * no signup) raises it to 300/day: set TOOLRADAR_API_KEY.
+ * No API key is needed: anonymous calls get 500/day. A free key (POST https://toolradar.com/api/v1/keys,
+ * no signup, or one from the dashboard) raises it to 10,000/day: set TOOLRADAR_API_KEY.
  */
 
 const DEFAULT_MCP_URL = "https://toolradar.com/api/mcp";

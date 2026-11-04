@@ -2,9 +2,9 @@
   "manifest_version": "0.2",
   "name": "toolradar",
   "display_name": "Toolradar",
-  "version": "2.2.0",
-  "description": "Recommend, compare, and get verified pricing for 8,600+ software tools.",
-  "long_description": "Toolradar gives Claude live access to a curated database of 8,600+ software tools: semantic search, budget-aware recommendations, side-by-side comparisons, real alternatives, verified pricing tiers, and aggregated G2/Capterra ratings. Data is refreshed continuously from vendors' own pricing pages.\n\nNo API key needed: the first 40 calls a day are free and anonymous. A free key (no signup, see the README) raises the limit to 300 a day.",
+  "version": "2.4.0",
+  "description": "Recommend, compare, and get verified pricing for 10,000+ software tools.",
+  "long_description": "Toolradar gives Claude live access to a curated database of 10,000+ software tools: semantic search, budget-aware recommendations, side-by-side comparisons, real alternatives, verified pricing tiers, and aggregated G2/Capterra ratings. Data is refreshed continuously from vendors' own pricing pages.\n\nNo API key needed: the first 500 calls a day are free and anonymous. A free key (no signup, see the README) raises the limit to 10,000 a day.",
   "author": {
     "name": "Toolradar",
     "email": "hello@toolradar.com",
@@ -43,7 +43,7 @@
     "api_key": {
       "type": "string",
       "title": "Toolradar API key",
-      "description": "Optional. Works without a key (40 calls a day); a free key raises it to 300 a day. Create one with no signup: POST https://toolradar.com/api/v1/keys",
+      "description": "Optional. Works without a key (500 calls a day); a free key raises it to 10,000 a day. Create one with no signup: POST https://toolradar.com/api/v1/keys",
       "sensitive": true,
       "required": false
     }
@@ -55,7 +55,7 @@
     },
     {
       "name": "search_tools",
-      "description": "Search 8,600+ tools by keyword, category, and pricing model"
+      "description": "Search 10,000+ tools by keyword, category, and pricing model"
     },
     {
       "name": "get_tool",
@@ -80,6 +80,18 @@
     {
       "name": "report_issue",
       "description": "Report incorrect data on a tool listing"
+    },
+    {
+      "name": "verify_price",
+      "description": "Read the vendor's pricing page now and check the stored prices (free key)"
+    },
+    {
+      "name": "changes_since",
+      "description": "Pricing changes confirmed on vendor pages since a date"
+    },
+    {
+      "name": "agent_trends",
+      "description": "What AI assistants open on Toolradar: most read and compared tools"
     }
   ],
   "compatibility": {

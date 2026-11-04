@@ -58,7 +58,7 @@ server.tool(
 // --- Tool 1: search_tools ---
 server.tool(
   "search_tools",
-  "Search and filter software tools from Toolradar's database of 8,600+ tools. Returns tools with names, descriptions, pricing, scores, and categories.",
+  "Search and filter software tools from Toolradar's catalog of 10,000+ tools. Returns tools with names, descriptions, pricing, scores, and categories. A product name we do not list comes back with a not_listed note instead of a lookalike.",
   {
     query: z.string().optional().describe("Search query (e.g. 'project management', 'AI writing tool')"),
     category: z.string().optional().describe("Filter by category slug (e.g. 'project-management', 'ai-writing')"),
@@ -171,6 +171,34 @@ server.tool(
       return { content: [{ type: "text" as const, text: `Error: ${(e as Error).message}` }], isError: true };
     }
   }
+);
+
+// --- Tool 8: verify_price (v2.4.0) ---
+server.tool(
+  "verify_price",
+  "Read the vendor's pricing page now and check the stored prices against it. Returns each plan's result, the read date and a hash of the page. Needs a free API key (TOOLRADAR_API_KEY); one read per tool per day.",
+  { slug: z.string().describe("Tool slug (e.g. 'notion')") },
+  async (args) => run("verify_price", args)
+);
+
+// --- Tool 9: changes_since (v2.4.0) ---
+server.tool(
+  "changes_since",
+  "Software pricing changes Toolradar confirmed on vendor pages since a date, newest first. The record starts in October 2026: no entry for a tool means no change recorded, not proof of a stable price.",
+  {
+    since: z.string().describe("ISO date, e.g. 2026-10-01"),
+    category: z.string().optional().describe("Category slug (optional)"),
+    limit: z.number().min(1).max(50).optional().describe("Default 20, max 50"),
+  },
+  async (args) => run("changes_since", args)
+);
+
+// --- Tool 10: agent_trends (v2.4.0) ---
+server.tool(
+  "agent_trends",
+  "What AI assistants open on Toolradar while answering people, in aggregate and anonymous: most read tools, most compared tools, top categories, from verified assistant traffic.",
+  {},
+  async () => run("agent_trends", {})
 );
 
 // --- Prompts: slash commands that chain the tools (v2.0.0) ---
